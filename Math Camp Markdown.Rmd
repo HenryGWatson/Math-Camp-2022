@@ -1,0 +1,75 @@
+---
+title: "Math Camp Computational Bootcamp: R Markdown"
+author: "Henry Watson"
+date: "8/19/2022"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+setwd()
+world <- read.csv("poliscidata_world.csv")
+```
+
+# Introduction
+
+For this R Workshop, we're going to walk through an exercise, writing up the results using "R Markdown". Markdown is a powerful tool for coding and writing in the same document. You don't *have* to use it for any of the assignments in this class, but it may actually make your life easier!
+
+Some basics:
+
+* To avoid worrying about setting working directories, place your data within the same folder as your Markdown file
+* When you're just typing in the white space, that will be recorded as text, not code!
+* You can use symbols to format your document! 
+    + At the start, I used a # symbol at the start of a new line to indicate a header. Multiple #s will produce subheadings. 
+    + I'm using * and + (with two indents) symbols at the start of each line in this section to produce a bulleted list.
+    + In the first intro paragraph, I used asterisks around a word to *italicize* it. You can also use multiple asterisks to **bold**.
+* To finish your document, use the "Knit" tool at the top of your window. This will save a pdf to the same folder in which you saved this R Markdown script.
+* Refer to https://rmarkdown.rstudio.com/authoring_basics.html
+
+# Coding
+
+In Markdown, you'll probably want to run some code. Let's use the "Insert" -> "R" button at the top of the window to display a simple command.
+
+```{r}
+1 + 1
+```
+
+You can also hide the command and/or the results if you just want to run things without displaying the output.
+
+```{r, echo=FALSE, results='hide'}
+1 + 1
+```
+
+Let's run some of the code from Wednesday
+
+```{r}
+world_women <- subset(world, dem_level4 != "Authoritarian", select = c(country, dem_level4, women05, women09, women13))
+# These variables record the percent women in the lower house of the legislature for democracies
+# We can reshape this dataframe to make "year" a column variable
+world_women_reshape <- reshape(world_women,
+                               varying = c("women05", "women09", "women13"),
+                               v.names = c("dem_level4"),
+                               timevar = "year",
+                               idvar = "country",
+                               times = c(2005, 2009, 2013),
+                               direction = "long")
+```
+
+We can display plots in a Markdown document (you might want to hide the code here using echo = FALSE)
+
+```{r, echo = FALSE}
+barplot(prop.table(table(world$dem_level4)))
+```
+
+We can add some labels to our plots as well
+
+```{r, echo = FALSE}
+barplot(prop.table(table(world$dem_level4)),
+        names = c("Authoritarian", "Full Democracy", "Hybrid", "Partial Democracy"),
+        xlab  = "Regime Type",
+        ylab  = "Proportion of Countries",
+        main  = "World Democracies")
+```
+
