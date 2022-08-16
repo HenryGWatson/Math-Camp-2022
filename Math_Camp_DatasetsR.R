@@ -186,7 +186,32 @@
                                    direction = "long")
     # A quick sort of the new dataframe
     world_women_reshape <- world_women_reshape[order(world_women_reshape$country, world_women_reshape$year),]
-    View(world_women_reshape)    
+    View(world_women_reshape)
+    
+# Extra stuff: Loops (and Simulation) in R
+    # Very often, you will have to do a repeated operation
+    # You could copy/paste your code, changing something slightly, but there's a better way
+    # Let's say we wanted to convert three variables — spendeduc, spendhealth, and spendmil — into percentages
+    # apply is actually a better solution usually than writing a loop
+        world[,c("spendeduc","spendhealth","spendmil")] <- 
+          apply(world[,c("spendeduc","spendhealth","spendmil")], 
+              2,
+              function(x) pct = x / 100)
+    # But sometimes a loop really is appropriate, particularly for simulations
+      # What do we get if we take a random set of 10 values with a mean of zero and a standard deviation of 1?
+        rnorm(10, 0, 1)
+        boxplot(rnorm(10, 0, 1))
+      # Define an empty object
+        means <- c()
+      # Take the mean of a random set of values with mean 1 and standard deviation 1 1000 times
+        for (i in 1:5000) {
+          means[i] <- mean(rnorm(10, 0, 1))
+        }
+        head(means)
+        summary(means)
+      # Plot means
+        hist(means)
+    
 
 # One last R tip:
     # The swirl package is an inbuilt tutorial to R. Learn R in R!
