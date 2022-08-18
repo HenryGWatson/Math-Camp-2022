@@ -179,9 +179,9 @@
     # We can reshape this dataframe to make "year" a column variable
     world_women_reshape <- reshape(world_women,
                                    varying = c("women05", "women09", "women13"),
-                                   v.names = c("dem_level4"),
+                                   v.names = c("women"),
                                    timevar = "year",
-                                   idvar = "country",
+                                   idvar = c("country", "dem_level4"),
                                    times = c(2005, 2009, 2013),
                                    direction = "long")
     # A quick sort of the new dataframe
